@@ -67,6 +67,7 @@ test('the refine instance can be serialized', function () {
                 'is_active' => false,
                 'value' => null,
                 'default' => null,
+                'options' => null,
             ],
         ],
         'scope' => 'products',

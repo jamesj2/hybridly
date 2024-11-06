@@ -121,3 +121,54 @@ it('supports checking against multiple values when options is an enum', function
 
     expect($filters->toRawSql())->toBe('select * from "products" where "products"."vendor" in (\'microsoft\', \'apple\') and "products"."deleted_at" is null');
 });
+
+test('provide options for table when defined', function (Closure|string|array|null $options, ?array $result) {
+    expect(SelectFilter::make('vendor')
+        ->multiple()
+        ->options($options))
+        ->toBeInstanceOf(SelectFilter::class)
+        ->jsonSerialize()->toBe([
+            'name' => 'vendor',
+            'hidden' => false,
+            'label' => 'Vendor',
+            'type' => 'select',
+            'metadata' => [],
+            'is_active' => false,
+            'value' => null,
+            'default' => null,
+            'options' => $result,
+        ]);
+})->with([
+    'enum' => [Vendor::class, [
+        ['value' => 'apple', 'label' => 'Apple'],
+        ['value' => 'microsoft', 'label' => 'Microsoft'],
+    ]],
+    'multi' => [[
+        'iphone' => 'ios',
+        'ipad' => 'ipados',
+        'samsung' => 'android',
+    ], [
+        ['value' => 'ios', 'label' => 'iphone'],
+        ['value' => 'ipados', 'label' => 'ipad'],
+        ['value' => 'android', 'label' => 'samsung'],
+    ]],
+    'simple' => [[
+        'ios',
+        'ipados',
+        'android',
+    ], [
+        ['value' => 'ios', 'label' => 'ios'],
+        ['value' => 'ipados', 'label' => 'ipados'],
+        ['value' => 'android', 'label' => 'android'],
+    ]],
+    'value_label' => [[
+        ['value' => 'iphone', 'label' => 'ios'],
+        ['value' => 'ipad', 'label' => 'ipados'],
+        ['value' => 'samsung', 'label' => 'android'],
+    ], [
+        ['value' => 'iphone', 'label' => 'ios'],
+        ['value' => 'ipad', 'label' => 'ipados'],
+        ['value' => 'samsung', 'label' => 'android'],
+    ]],
+    [null, null],
+]);

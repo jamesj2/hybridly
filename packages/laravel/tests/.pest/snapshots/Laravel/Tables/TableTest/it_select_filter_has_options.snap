@@ -2,31 +2,51 @@
     "id": "products-table",
     "keyName": "id",
     "refinements": {
-        "sorts": [
-            {
-                "name": "name",
-                "hidden": false,
-                "label": "Name",
-                "metadata": [],
-                "is_active": false,
-                "direction": null,
-                "default": null,
-                "desc": "-name",
-                "asc": "name",
-                "next": "name"
-            }
-        ],
+        "sorts": [],
         "filters": [
             {
-                "name": "name",
+                "name": "phone",
                 "hidden": false,
-                "label": "Name",
-                "type": "exact",
+                "label": "Phone",
+                "type": "select",
                 "metadata": [],
                 "is_active": false,
                 "value": null,
                 "default": null,
-                "options": null
+                "options": [
+                    {
+                        "value": "ios",
+                        "label": "iphone"
+                    },
+                    {
+                        "value": "ipados",
+                        "label": "ipad"
+                    },
+                    {
+                        "value": "android",
+                        "label": "samsung"
+                    }
+                ]
+            },
+            {
+                "name": "enum",
+                "hidden": false,
+                "label": "Enum",
+                "type": "select",
+                "metadata": [],
+                "is_active": false,
+                "value": null,
+                "default": null,
+                "options": [
+                    {
+                        "value": "apple",
+                        "label": "Apple"
+                    },
+                    {
+                        "value": "microsoft",
+                        "label": "Microsoft"
+                    }
+                ]
             }
         ],
         "scope": null,
@@ -37,9 +57,13 @@
     },
     "records": [
         {
-            "name": {
+            "os": {
                 "extra": [],
-                "value": "AirPods"
+                "value": null
+            },
+            "enum": {
+                "extra": [],
+                "value": null
             },
             "__hybridId": 1
         }
@@ -76,27 +100,20 @@
     },
     "columns": [
         {
-            "name": "name",
+            "name": "os",
             "type": "text",
-            "label": "Name",
+            "label": "Os",
+            "metadata": []
+        },
+        {
+            "name": "enum",
+            "type": "text",
+            "label": "Enum",
             "metadata": []
         }
     ],
     "endpoint": "hybridly.action.invoke",
-    "inlineActions": [
-        {
-            "name": "say_my_name",
-            "label": "Say my name",
-            "metadata": []
-        }
-    ],
-    "bulkActions": [
-        {
-            "name": "say_our_names",
-            "label": "Say our names",
-            "metadata": [],
-            "deselect": true
-        }
-    ],
+    "inlineActions": [],
+    "bulkActions": [],
     "scope": null
 }

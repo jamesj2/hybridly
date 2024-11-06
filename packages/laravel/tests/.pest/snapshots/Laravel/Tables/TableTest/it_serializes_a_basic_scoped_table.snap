@@ -25,7 +25,8 @@
                 "metadata": [],
                 "is_active": false,
                 "value": null,
-                "default": null
+                "default": null,
+                "options": null
             }
         ],
         "scope": "custom-scope",

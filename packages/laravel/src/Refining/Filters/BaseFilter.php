@@ -18,6 +18,7 @@ abstract class BaseFilter extends Components\Component implements Refiner, Filte
     use Components\Concerns\HasName;
     use Components\Concerns\IsHideable;
     use Concerns\HasDefaultValue;
+    use Concerns\HasOptions;
     use Concerns\HasType;
     use Refining\Concerns\QualifiesColumns;
 
@@ -68,6 +69,7 @@ abstract class BaseFilter extends Components\Component implements Refiner, Filte
             'is_active' => $this->isActive(),
             'value' => $this->value,
             'default' => $this->defaultValue,
+            'options' => $this->getOptionsArray()?->values()->toArray(),
         ];
     }
 

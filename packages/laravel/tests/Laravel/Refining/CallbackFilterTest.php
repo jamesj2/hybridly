@@ -27,6 +27,7 @@ it('can be serialized', function () {
             'is_active' => false,
             'value' => null,
             'default' => null,
+            'options' => null,
         ]);
 });
 
@@ -131,5 +132,6 @@ it('uses the type of the invokable class', function () {
             'is_active' => false,
             'value' => null,
             'default' => null,
+            'options' => null,
         ]);
 });

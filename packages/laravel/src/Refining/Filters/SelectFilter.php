@@ -2,7 +2,6 @@
 
 namespace Hybridly\Refining\Filters;
 
-use BackedEnum;
 use Hybridly\Refining\Concerns\SupportsRelationConstraints;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -12,7 +11,6 @@ class SelectFilter extends BaseFilter
     use SupportsRelationConstraints;
 
     protected \Closure|string $operator = '=';
-    protected \Closure|string|array $options = [];
     protected null|\Closure|bool $isMultiple = false;
 
     protected function setUp(): void
@@ -20,7 +18,7 @@ class SelectFilter extends BaseFilter
         $this->type('select');
     }
 
-    public static function make(string $property, ?string $alias = null, \Closure|string|array $options = []): static
+    public static function make(string $property, ?string $alias = null, \Closure|Collection|string|array $options = []): static
     {
         $static = resolve(static::class, [
             'property' => $property,
@@ -32,15 +30,7 @@ class SelectFilter extends BaseFilter
 
     public function apply(Builder $builder, mixed $value, string $property): void
     {
-        $options = $this->evaluate($this->options);
-
-        if ($options instanceof Collection) {
-            $options = $options->toArray();
-        }
-
-        if (\is_string($options) && is_a($options, BackedEnum::class, allow_string: true)) {
-            $options = array_map(fn (\BackedEnum $enum) => $enum->value, $options::cases());
-        }
+        $options = $this->getOptions();
 
         if (\is_string($options)) {
             throw new \InvalidArgumentException("The options for the [{$property}] filter must be either an array or a backed enum.");
@@ -72,16 +62,6 @@ class SelectFilter extends BaseFilter
     }
 
     /**
-     * Defines the options for this filter.
-     */
-    public function options(\Closure|string|array $options): static
-    {
-        $this->options = $options;
-
-        return $this;
-    }
-
-    /**
      * Defines whether multiple choices can be selected.
      */
     public function multiple(\Closure|bool $condition = true): static
@@ -95,6 +75,13 @@ class SelectFilter extends BaseFilter
     {
         $value = array_map(fn ($s) => trim($s), \is_array($value) ? $value : explode(',', $value));
 
+        /**
+         * $allowedOptions can be a list of values or an array of associative arrays [ '...' => '...', 'value' => 'allowed value' ]
+         *
+         * GIVEN I do not wish to use values not in the allowed options
+         * WHEN I provide an invalid value
+         * THEN I will not apply the filter
+         */
         if (empty(array_intersect($value, $allowedOptions))) {
             return;
         }

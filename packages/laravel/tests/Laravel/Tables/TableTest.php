@@ -17,6 +17,7 @@ use Hybridly\Tests\Laravel\Tables\Fixtures\BasicProductsTableWithConditionallyHi
 use Hybridly\Tests\Laravel\Tables\Fixtures\BasicProductsTableWithData;
 use Hybridly\Tests\Laravel\Tables\Fixtures\BasicProductsTableWithDataUsingFromModel;
 use Hybridly\Tests\Laravel\Tables\Fixtures\BasicProductsTableWithExtra;
+use Hybridly\Tests\Laravel\Tables\Fixtures\BasicProductsTableWithFilterOptions;
 use Hybridly\Tests\Laravel\Tables\Fixtures\BasicProductsTableWithHiddenStuff;
 use Hybridly\Tests\Laravel\Tables\Fixtures\BasicProductsTableWithMetadata;
 use Hybridly\Tests\Laravel\Tables\Fixtures\BasicProductsTableWithSoftDeleteAction;
@@ -405,3 +406,8 @@ test('`InlineTable` cannot have actions', function () {
         'recordId' => ProductFactory::createImmutable()->id,
     ]);
 })->throws(InvalidTableException::class);
+
+it('select filter has options', function () {
+    ProductFactory::createImmutable();
+    expect(BasicProductsTableWithFilterOptions::make()->jsonSerialize())->toMatchSnapshot();
+});
